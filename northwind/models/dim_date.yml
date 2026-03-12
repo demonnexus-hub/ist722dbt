@@ -1,0 +1,18 @@
+version: 2
+
+models:
+  - name: dim_date
+    description: Conformed Date dimesnion. One row per day of the year.
+    columns:
+      - name: datekey
+        data_type: int
+        description:  the surrogate key of the date YYYMMDD
+        tests:
+         - not_null
+         - unique
+      - name: date
+        description: the date of the date key
+        tests:
+           - not_null
+           - unique
+            
