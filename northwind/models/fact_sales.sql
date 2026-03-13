@@ -1,19 +1,18 @@
 with stge_orders as 
 (
     select        OrderID,  
-        {{ dbt_utils.generate_surrogate_key(['employeeid']) }} as employeekey, 
-        {{ dbt_utils.generate_surrogate_key(['customerid']) }} as customerkey, 
+        employeeid as employeekey, 
+       customerid as customerkey, 
         replace(to_date(orderdate)::varchar,'-','')::int as orderdate
         from {{source("northwind","Orders")}}
         )
 ,
 stge_details as(
-    select         OrderID as OI,
-        {{dbt_utils.generate_surrogate_key(['productid'])}},
+    select         OrderID as OI, productid as productkey,
         quantity,
         (quantity * unitprice) as extendedpriceamount,
         (extendedpriceamount * discount) as discountamount,
-        (extendedpriceamount-discountamount)
+        (extendedpriceamount-discountamount) as soldamount
 
         from {{source("northwind","Order_Details")}}
 )
